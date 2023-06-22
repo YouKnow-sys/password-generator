@@ -1,0 +1,19 @@
+[package]
+name = "password-generator"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clipboard = "0.5.0"
+rand = "0.8.5"
+vizia = { git = "https://github.com/vizia/vizia.git", version = "0.1.0" }
+
+[profile.release]
+# debug = 1 # only when we want to debug the code in release mode.
+codegen-units = 1
+lto = "fat"
+opt-level = "s"
+strip = true
+panic = "abort"

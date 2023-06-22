@@ -1,0 +1,57 @@
+gui {
+    child-space: 20px;
+}
+
+.title {
+    font-size: 30;
+    top: 60px;
+    left: 1s;
+    right: 1s;
+    bottom: 50px;
+}
+
+.password-input, .password-extra, .password-output {
+    height: 50px;
+}
+
+.password-input > label {
+    top: 4px;
+    right: 10px;
+    font-size: 20;
+}
+
+.password-extra {
+    child-right: 1s;
+    child-left: 1s;
+}
+
+.password-extra > label, .password-extra > checkbox {
+    top: 5px;
+    right: 10px;
+}
+
+.password-title {
+    top: 25px;
+    bottom: 15px;
+    width: 1s;
+    font-size: 25;
+    child-left: 1s;
+    child-right: 1s;
+}
+
+.password-output > textbox {
+    width: 1s;
+    right: 10px;
+}
+
+password-extra {
+    top: 13px;
+}
+
+.footer > button {
+    size: 40px;
+}
+
+.footer > label {
+    bottom: 7px;
+}
