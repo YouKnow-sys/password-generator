@@ -8,3 +8,8 @@ A simple password generator created using [Vizia](https://github.com/vizia/vizia
 I created this simple project just to play around with vizia, nothing more.
 
 You can find the executable for trying out in **release** section.
+
+## Photos
+![image](https://github.com/YouKnow-sys/password-generator/assets/17937017/d15fb38b-b96a-4e8a-a83b-13892432cfc6)
+![image](https://github.com/YouKnow-sys/password-generator/assets/17937017/5eab6357-e391-433f-a7a6-f7fa8535bf83)
+
