@@ -47,7 +47,7 @@ impl PasswordGenerator {
 fn generate_characters(rng: &mut ThreadRng) -> Vec<char> {
     let mut characters = Vec::with_capacity(94);
     
-    let range = Uniform::new_inclusive(33, 127);
+    let range = Uniform::new_inclusive(33, 126);
     while characters.len() != 94 {
         let ch = char::from_u32(rng.sample(range)).unwrap();
         if !characters.contains(&ch) {
