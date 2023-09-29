@@ -1,4 +1,3 @@
-use clipboard::{ClipboardProvider, ClipboardContext};
 use password_generator::PasswordGenerator;
 use vizia::{prelude::*, icons::{ICON_COPY, ICON_SETTINGS_AUTOMATION}};
 
@@ -15,7 +14,7 @@ struct GuiData {
     generated_password: String,
     status: String,
     status_color: Color,
-    theme: char,
+    theme: ThemeMode,
 }
 
 impl Default for GuiData {
@@ -30,7 +29,7 @@ impl Default for GuiData {
             generated_password: String::new(),
             status: "Program started".to_owned(),
             status_color: Color::white(),
-            theme: '\u{eaf8}',
+            theme: ThemeMode::DarkMode,
         }
     }
 }
@@ -58,7 +57,7 @@ impl Model for GuiData {
                 self.status_color = Color::green();
             },
             GuiEvent::CopyPass => {
-                match ClipboardContext::new().and_then(|mut cx| cx.set_contents(self.generated_password.clone())) {
+                match cx.set_clipboard(self.generated_password.clone()) {
                     Ok(_) => {
                         self.status = "copied to clipboard".to_owned();
                         self.status_color = Color::green();
@@ -70,17 +69,20 @@ impl Model for GuiData {
                 }
             },
             GuiEvent::ChangeTheme => match self.theme {
-                '\u{eb30}' /* sun */ => {
+                ThemeMode::LightMode => {
                     cx.emit(EnvironmentEvent::SetThemeMode(ThemeMode::DarkMode));
-                    self.theme = '\u{eaf8}';
-                    self.status_color = Color::white();
+                    self.theme = ThemeMode::DarkMode;
+                    if (self.status_color != Color::red()) && (self.status_color != Color::green()) {
+                        self.status_color = Color::white();
+                    }
                 },
-                '\u{eaf8}' /* moon */ => {
+                ThemeMode::DarkMode => {
                     cx.emit(EnvironmentEvent::SetThemeMode(ThemeMode::LightMode));
-                    self.theme = '\u{eb30}';
-                    self.status_color = Color::black();
+                    self.theme = ThemeMode::LightMode;
+                    if (self.status_color != Color::red()) && (self.status_color != Color::green()) {
+                        self.status_color = Color::black();
+                    }
                 },
-                _ => unreachable!(),
             },
         })
     }
@@ -122,9 +124,8 @@ impl Gui {
                     cx,
                     |cx| {
                         Textbox::new(cx, GuiData::password_length)
-                            .validate(|v| v.parse::<usize>().is_ok())
-                            .on_submit(|cx, text, _| {
-                                cx.emit(GuiEvent::SetPassLength(text.parse().unwrap()))
+                            .on_submit(|cx, value, _| {
+                                cx.emit(GuiEvent::SetPassLength(value))
                             })
                     },
                     SpinboxKind::Horizontal,
@@ -185,7 +186,7 @@ impl Gui {
                 Button::new(
                     cx,
                     |cx| cx.emit(GuiEvent::ChangeTheme),
-                    |cx| Icon::new(cx, GuiData::theme),
+                    |cx| Icon::new(cx, GuiData::theme.map(get_theme_char)),
                 )
                 .left(Stretch(1.0));
             })
@@ -193,5 +194,12 @@ impl Gui {
             .child_top(Stretch(1.0));
         })
         .layout_type(LayoutType::Column)
+    }
+}
+
+fn get_theme_char(theme: &ThemeMode) -> char {
+    match theme {
+        ThemeMode::DarkMode => '\u{eaf8}' /* moon */,
+        ThemeMode::LightMode => '\u{eb30}' /* sun */,
     }
 }
