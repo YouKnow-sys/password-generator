@@ -42,6 +42,7 @@ gui {
 .password-output > textbox {
     width: 1s;
     right: 10px;
+    font-size: 18;
 }
 
 password-extra {
